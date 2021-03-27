@@ -1,0 +1,34 @@
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework import routers
+
+from . import views
+from . import apis
+
+
+router = routers.DefaultRouter()
+router.register("short-code-changes", apis.ShortCodeChangeViewSet, basename="short code changes")
+router.register('products', apis.ProductViewSet, basename="products data")
+router.register('products-backup', apis.ProductBackupViewSet, basename="products backup")
+router.register('event-logs', apis.EventLogViewSet, basename="event logs")
+router.register('user-settings', apis.UserSettingViewSet, basename="user settings")
+router.register('fields', apis.FieldViewSet, basename="fields")
+router.register('column-profiles', apis.ColumnProfileViewSet, basename="column profiles")
+router.register('column-profile-fields', apis.ColumnProfileFieldViewSet, basename="column profile fields")
+
+urlpatterns = [
+    path('test/', views.test),
+    path('profile/', apis.ProfileView.as_view(), name='my user profile'),
+    path('upload/', views.UploadFileView.as_view(), name='file-upload'),
+    path('event-logs-user/', apis.EventLogView.as_view(), name='user event logs'),
+    path('product-change-logs-x/', apis.ProductChangeLogView.as_view(), name='product change logs per user/event_log'),
+    path('products-bulk/', apis.ProductView.as_view(), name='products bulk'),
+    path('products-update-bulk/', apis.ProductUpdateView.as_view(), name='products update bulk'),
+    path('fields-bulk/', apis.FieldView.as_view(), name='fields bulk'),
+    path('column-profile-fields-bulk/', apis.ColumnProfileFieldView.as_view(), name='column profile fields bulk'),
+    path('column-profile-fields-detail/', apis.ColumnProfileFieldDetailView.as_view(), name='column profile fields detail'),
+    path('sync/column-profile-fields/', apis.SyncColumnProfileFieldView.as_view(), name='sync column profile fields'),
+    path('short-code-changes-bulk/', apis.ShortCodeChangeView.as_view(), name='short code changes bulk'),
+]
+
+urlpatterns += router.urls
